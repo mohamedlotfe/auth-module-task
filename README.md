@@ -41,8 +41,13 @@ npm install
 # Start MongoDB
 docker-compose up -d
 
-# Start app
+# Start backend app
+cd backend
 npm run start:dev
+
+# Start frontend app
+cd frontend
+npm run start
 ```
 
 ## API Endpoints
