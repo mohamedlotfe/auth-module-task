@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { getMongoConfig } from './common/database/mongo.config';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { getMongoConfig } from './common/database/mongo.config';
       useFactory: (configService: ConfigService) =>
         getMongoConfig(configService),
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
