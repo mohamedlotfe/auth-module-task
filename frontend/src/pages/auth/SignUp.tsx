@@ -4,24 +4,32 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Link, useNavigate } from 'react-router-dom'
 import { authApi } from '../../api/auth'
+import { useAuth } from '../../context/AuthContext'
 import { FormInput } from '../../components/FormInput'
 import { Button } from '../../components/Button'
 import type { SignUpData } from '../../types/auth'
 
-const signUpSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain at least one uppercase letter, one lowercase letter, and one number'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-})
+const signUpSchema = z
+  .object({
+    email: z.string().email('Please enter a valid email address'),
+    name: z.string().min(3, 'Name must be at least 3 characters'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])/,
+        'Password must contain at least one letter, one number, and one special character'
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  })
 
 export const SignUp: React.FC = () => {
   const navigate = useNavigate()
+  const { checkAuth } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [serverError, setServerError] = useState<string>('')
 
@@ -39,9 +47,14 @@ export const SignUp: React.FC = () => {
 
     try {
       await authApi.signUp(data)
+      await checkAuth() // Update auth context with user data
       navigate('/app')
     } catch (error) {
-      setServerError(error instanceof Error ? error.message : 'An error occurred during sign up')
+      setServerError(
+        error instanceof Error
+          ? error.message
+          : 'An error occurred during sign up'
+      )
     } finally {
       setIsLoading(false)
     }
@@ -70,7 +83,7 @@ export const SignUp: React.FC = () => {
               {serverError}
             </div>
           )}
-          
+
           <FormInput
             label="Email address"
             type="email"
@@ -78,6 +91,16 @@ export const SignUp: React.FC = () => {
             error={errors.email?.message}
             register={register}
             name="email"
+            required
+          />
+
+          <FormInput
+            label="Name"
+            type="text"
+            placeholder="Enter your name"
+            error={errors.name?.message}
+            register={register}
+            name="name"
             required
           />
 

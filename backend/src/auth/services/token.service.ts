@@ -50,9 +50,10 @@ export class TokenService {
     const secret = this.configService.get<string>('JWT_ACCESS_SECRET') || '';
     const expiresIn =
       this.configService.get<string>('JWT_ACCESS_EXPIRATION') || '15m';
+    console.log(expiresIn);
     return this.jwtService.sign<AccessTokenPayload>(payload, {
       secret,
-      expiresIn: parseInt(expiresIn, 10),
+      expiresIn: expiresIn as unknown as number,
     });
   }
 
@@ -67,7 +68,7 @@ export class TokenService {
       this.configService.get<string>('JWT_REFRESH_EXPIRATION') || '7d';
     const token = this.jwtService.sign<RefreshTokenPayload>(payload, {
       secret,
-      expiresIn: parseInt(expiresIn, 10),
+      expiresIn: expiresIn as any,
     });
 
     return { token, tokenId };

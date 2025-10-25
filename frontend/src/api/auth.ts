@@ -4,11 +4,9 @@ import type { User, SignUpData, SignInData, AuthResponse } from '../types/auth'
 export const authApi = {
   async signUp(data: SignUpData): Promise<AuthResponse> {
     const response = await apiClient.post<AuthResponse>('/auth/signup', {
-      email: data.email,
-      password: data.password,
+      ...data,
     })
 
-    // Store access token if provided
     if (response.accessToken) {
       localStorage.setItem('accessToken', response.accessToken)
     }
@@ -18,11 +16,9 @@ export const authApi = {
 
   async signIn(data: SignInData): Promise<AuthResponse> {
     const response = await apiClient.post<AuthResponse>('/auth/signin', {
-      email: data.email,
-      password: data.password,
+      ...data,
     })
 
-    // Store access token if provided
     if (response.accessToken) {
       localStorage.setItem('accessToken', response.accessToken)
     }
@@ -40,6 +36,6 @@ export const authApi = {
   },
 
   async getProfile(): Promise<User> {
-    return apiClient.get<User>('/profile')
+    return apiClient.get<User>('/auth/profile')
   },
 }

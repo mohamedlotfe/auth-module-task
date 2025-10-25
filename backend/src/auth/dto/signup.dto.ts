@@ -20,6 +20,11 @@ export class SignUpDto {
 
   @IsString()
   @IsNotEmpty()
-  @MinLength(2)
+  @MinLength(3)
   name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(3)
+  confirmPassword: string;
 }

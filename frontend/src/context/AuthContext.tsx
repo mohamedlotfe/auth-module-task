@@ -24,9 +24,11 @@ export const AuthProvider: React.FC<{ children: React.ReactElement }> = ({
       const userData = await authApi.getProfile()
       setUser(userData)
     } catch (error) {
+      console.error('Check auth failed:', error)
       setUser(null)
-      // remove Access token
       localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+    } finally {
       setIsLoading(false)
     }
   }
@@ -35,7 +37,6 @@ export const AuthProvider: React.FC<{ children: React.ReactElement }> = ({
     try {
       await authApi.logout()
     } catch (error) {
-      // Continue with logout even if API call fails
       console.error('Logout API call failed:', error)
     } finally {
       setUser(null)

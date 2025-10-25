@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Link, useNavigate } from 'react-router-dom'
 import { authApi } from '../../api/auth'
+import { useAuth } from '../../context/AuthContext'
 import { FormInput } from '../../components/FormInput'
 import { Button } from '../../components/Button'
 import type { SignInData } from '../../types/auth'
@@ -15,6 +16,7 @@ const signInSchema = z.object({
 
 export const SignIn: React.FC = () => {
   const navigate = useNavigate()
+  const { checkAuth } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [serverError, setServerError] = useState<string>('')
 
@@ -32,9 +34,14 @@ export const SignIn: React.FC = () => {
 
     try {
       await authApi.signIn(data)
+      await checkAuth() // Update auth context with user data
       navigate('/app')
     } catch (error) {
-      setServerError(error instanceof Error ? error.message : 'An error occurred during sign in')
+      setServerError(
+        error instanceof Error
+          ? error.message
+          : 'An error occurred during sign in'
+      )
     } finally {
       setIsLoading(false)
     }
@@ -63,7 +70,7 @@ export const SignIn: React.FC = () => {
               {serverError}
             </div>
           )}
-          
+
           <FormInput
             label="Email address"
             type="email"

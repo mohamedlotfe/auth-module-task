@@ -48,28 +48,40 @@ export const AppPage: React.FC = () => {
         <div className="px-4 py-6 sm:px-0">
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Welcome to your dashboard!</h2>
-              
+              <h2 className="text-lg font-medium text-gray-900 mb-4">
+                Welcome to the application.
+              </h2>
+
               {user && (
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">User Information</h3>
+                  <h3 className="text-sm font-medium text-gray-500 mb-2">
+                    User Information
+                  </h3>
                   <div className="space-y-2">
                     <div>
                       <span className="text-sm text-gray-600">Email: </span>
-                      <span className="text-sm font-medium text-gray-900">{user.email}</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {user.email}
+                      </span>
                     </div>
                     <div>
                       <span className="text-sm text-gray-600">User ID: </span>
-                      <span className="text-sm font-medium text-gray-900">{user.id}</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {user.id}
+                      </span>
                     </div>
                     {user.name && (
                       <div>
                         <span className="text-sm text-gray-600">Name: </span>
-                        <span className="text-sm font-medium text-gray-900">{user.name}</span>
+                        <span className="text-sm font-medium text-gray-900">
+                          {user.name}
+                        </span>
                       </div>
                     )}
                     <div>
-                      <span className="text-sm text-gray-600">Member since: </span>
+                      <span className="text-sm text-gray-600">
+                        Member since:{' '}
+                      </span>
                       <span className="text-sm font-medium text-gray-900">
                         {new Date(user.createdAt).toLocaleDateString()}
                       </span>
@@ -80,8 +92,8 @@ export const AppPage: React.FC = () => {
 
               <div className="mt-6">
                 <p className="text-sm text-gray-600">
-                  This is a protected page that requires authentication. You can only see this content
-                  because you are logged in.
+                  This is a protected page that requires authentication. You can
+                  only see this content because you are logged in.
                 </p>
               </div>
             </div>

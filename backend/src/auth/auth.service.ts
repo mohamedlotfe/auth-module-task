@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { RefreshTokenRepository } from './repositories/refresh-token.repository';
 import { SignUpDto, SignInDto, AuthResponseDto } from './dto';
@@ -14,8 +18,11 @@ export class AuthService {
   ) {}
 
   async signup(signUpDto: SignUpDto): Promise<AuthResponseDto> {
-    const { email, password, name } = signUpDto;
+    const { email, password, name, confirmPassword } = signUpDto;
 
+    if (password !== confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
+    }
     const passwordHash = await this.passwordService.hashPassword(password);
 
     const user = await this.usersService.create({

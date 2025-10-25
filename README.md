@@ -55,9 +55,9 @@ Register a new user
 
 ```json
 {
-  "email": "user@example.com",
+  "email": "lotfy@example.com",
   "password": "Password123!",
-  "name": "John Doe"
+  "name": "Muhammed lotfy"
 }
 ```
 
