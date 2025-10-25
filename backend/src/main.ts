@@ -1,8 +1,29 @@
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
+import {
+  setupCors,
+  setupSecurity,
+  setupValidation,
+  setupFilters,
+} from './config/app.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+  const configService = app.get(ConfigService);
+
+  setupCors(app, configService);
+  setupSecurity(app);
+  setupValidation(app);
+  setupFilters(app);
+
+  const port = configService.get<number>('PORT') || 3000;
+  await app.listen(port);
+
+  console.log(`🚀 Application is running on: http://localhost:${port}`);
 }
-bootstrap();
+
+bootstrap().catch((error) => {
+  console.error('Failed to start application:', error);
+  process.exit(1);
+});

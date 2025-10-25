@@ -1,14 +1,12 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-export const getMongoConfig = (
-  configService: ConfigService,
-): TypeOrmModuleOptions => {
+export const mongoConfig = (configSrv: ConfigService): TypeOrmModuleOptions => {
   return {
     type: 'mongodb',
-    url: configService.get<string>('MONGODB_URI'),
-    synchronize: true, //configService.get<string>('NODE_ENV') !== 'production',
-    logging: true, //configService.get<string>('NODE_ENV') === 'development',
+    url: configSrv.get<string>('MONGODB_URI'),
+    synchronize: true,
+    logging: true,
     entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
     autoLoadEntities: true,
   };
