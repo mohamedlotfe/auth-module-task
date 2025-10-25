@@ -8,11 +8,3 @@ export class AuthResponseDto {
     roles: string[];
   };
 }
-
-export interface AuthenticatedRequest {
-  user: {
-    userId: string;
-    email: string;
-    roles: string[];
-  };
-}

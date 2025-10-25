@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
@@ -15,6 +16,7 @@ import {
   AuthResponseDto,
   AuthenticatedRequest,
 } from './dto';
+import { JwtAuthGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {
@@ -45,6 +47,7 @@ export class AuthController {
   }
 
   @Get('profile')
+  @UseGuards(JwtAuthGuard)
   getProfile(@Req() req: AuthenticatedRequest) {
     const user = req.user;
     return {
